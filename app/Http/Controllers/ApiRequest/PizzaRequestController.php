@@ -19,18 +19,32 @@ class PizzaRequestController extends Controller
         return json_decode($response, true)['pizzas'];
     }
 
-    public function storePizza(string $id): string
+    public function getPizzaById(string $id)
     {
-        $response = Http::withToken(self::TOKEN_API_KEY)->post(self::API_URL . 'pizzas');
+        $response = Http::withToken(self::TOKEN_API_KEY)->get(self::API_URL . 'pizzas/' . $id);
+        return json_decode($response, true)['pizza'];
+    }
+
+    public function storePizza($name, $price, $amount): string
+    {
+        $json = json_encode([
+            "name" => $name,
+            "price" => $price,
+            "amount" => $amount,
+            "provider" => 1
+        ]);
+
+        $response = Http::withToken(self::TOKEN_API_KEY)->withBody($json)->post(self::API_URL . 'pizzas');
         return $response->body();
     }
 
-    public function updatePizza($id, $name, $price): string
+    public function updatePizza($id, $name, $price, $amount): string
     {
         $json = json_encode([
             "id" => $id,
             "name" => $name,
-            "price " => $price
+            "price" => $price,
+            "amount" => $amount,
         ]);
 
         $response = Http::withToken(self::TOKEN_API_KEY)->withBody($json)->put(self::API_URL . 'pizzas');

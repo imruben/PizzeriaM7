@@ -19,6 +19,9 @@ class PizzaController extends Controller
     {
         $pizzas = $this->pizzaRequest->getAllPizzas();
 
+        foreach ($pizzas as &$pizza) {
+            $pizza['img'] = random_int(1, 7);
+        }
         return view('index', [
             'pizzas' => $pizzas
         ]);

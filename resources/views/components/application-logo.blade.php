@@ -1,1 +1,1 @@
-<img class="w-20 h-20" src="{{ asset('img/logo.png') }}">
+<img class="w-30 h-30" src="{{ asset('img/logo.png') }}">

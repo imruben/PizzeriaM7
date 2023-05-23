@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiRequest\PizzaRequestController;
+use Illuminate\Support\Facades\Session;
 
 class PizzaController extends Controller
 {
 
-    public PizzaRequestController $pizzaRequest;
+    private PizzaRequestController $pizzaRequest;
 
     public function __construct()
     {
@@ -19,11 +20,41 @@ class PizzaController extends Controller
     {
         $pizzas = $this->pizzaRequest->getAllPizzas();
 
-        foreach ($pizzas as &$pizza) {
-            $pizza['img'] = random_int(1, 7);
-        }
         return view('index', [
             'pizzas' => $pizzas
         ]);
+    }
+
+    public function addPizzaToCart(int $pizzaid)
+    {
+        $pizzasInCartSession = Session::get('cart');
+
+        if ($pizzasInCartSession == null) {
+            $pizzasInCartSession = [];
+        }
+        array_push($pizzasInCartSession, $pizzaid);
+
+        Session::put('cart', $pizzasInCartSession);
+
+        return redirect(route("pizzas.index"));
+    }
+
+    public function deletePizzaFromCart(int $indexpizza)
+    {
+
+        $pizzasInCartSession = Session::get('cart');
+
+        array_splice($pizzasInCartSession, $indexpizza, 1);
+
+        Session::put('cart', $pizzasInCartSession);
+
+        return redirect(route("cart.index"));
+    }
+
+    public function clearAllPizzasFromCart()
+    {
+        Session::forget('cart');
+
+        return redirect(route("cart.index"));
     }
 }

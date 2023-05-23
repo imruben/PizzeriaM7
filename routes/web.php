@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PizzaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +26,19 @@ Route::get('/dashboard', function () {
     return redirect(route("pizzas.index"));
 });
 
-Route::resource('pizzas', PizzaController::class)
+Route::controller(CartController::class)->middleware('auth')->group(function () {
+    Route::get('/cart', 'index')->name('cart.index');
+    // Route::post('/cart/addpizza/{pizza}', 'addPizzaToCart')->name('cart.addPizzaToCart');
+});
+
+Route::controller(PizzaController::class)->middleware('auth')->group(function () {
+    Route::get('/pizzas', 'index')->name('pizzas.index');
+    Route::post('/cart/addpizza/{pizza}', 'addPizzaToCart')->name('cart.addPizzaToCart');
+    Route::post('/cart/deletepizza/{pizza}', 'deletePizzaFromCart')->name('cart.deletePizzaFromCart');
+    Route::get('/cart/emptycart', 'clearAllPizzasFromCart')->name('cart.clearAllPizzasFromCart');
+});
+
+Route::resource('order', OrderController::class)
     ->middleware('auth');
 
 Route::resource('admin', AdminController::class)

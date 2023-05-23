@@ -16,6 +16,16 @@
                         Pizzas
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                        Cart
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('order.index')" :active="request()->routeIs('order.index')">
+                        Orders
+                    </x-nav-link>
+                </div>
                 @if(auth()->user()->is_admin)
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
@@ -75,6 +85,16 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('pizzas.index')" :active="request()->routeIs('pizzas.index')">
                 Pizzas
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                Cart
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('order.index')" :active="request()->routeIs('order.index')">
+                Orders
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
